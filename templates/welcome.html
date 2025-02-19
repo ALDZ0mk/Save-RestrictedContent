@@ -22,11 +22,13 @@ from aiojobs import create_scheduler
 # ----------------------------Bot-Start---------------------------- #
 
 def animated_print(text, delay=0.05):
-    for char in text:
-        sys.stdout.write(char)
-        sys.stdout.flush()
-        asyncio.sleep(delay)
-    print()
+    async def _print():
+        for char in text:
+            sys.stdout.write(char)
+            sys.stdout.flush()
+            await asyncio.sleep(delay)
+        print()
+    asyncio.run(_print())
 
 loop = asyncio.get_event_loop()
 
@@ -59,8 +61,7 @@ async def devggn_boot():
 😂 وأن يعطيني أخته ههههههههههه
 """
     
-    for line in bot_info.split("\n"):
-        animated_print(line, 0.05)
+    await animated_print(bot_info, 0.05)
 
     asyncio.create_task(schedule_expiry_check())
     print("Auto removal started ...")
@@ -71,4 +72,3 @@ if __name__ == "__main__":
     loop.run_until_complete(devggn_boot())
 
 # ------------------------------------------------------------------ #
-
