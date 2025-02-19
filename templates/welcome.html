@@ -13,12 +13,20 @@
 import asyncio
 import importlib
 import gc
+import sys
 from pyrogram import idle
 from devgagan.modules import ALL_MODULES
 from devgagan.core.mongo.plans_db import check_and_remove_expired_users
 from aiojobs import create_scheduler
 
 # ----------------------------Bot-Start---------------------------- #
+
+def animated_print(text, delay=0.05):
+    for char in text:
+        sys.stdout.write(char)
+        sys.stdout.flush()
+        asyncio.sleep(delay)
+    print()
 
 loop = asyncio.get_event_loop()
 
@@ -33,13 +41,13 @@ async def schedule_expiry_check():
 async def devggn_boot():
     for all_module in ALL_MODULES:
         importlib.import_module("devgagan.modules." + all_module)
-    print("""
+    
+    bot_info = """
 ---------------------------------------------------
 📂 Bot Deployed successfully ...
 📝 Description: A Pyrogram bot for downloading files from Telegram channels or groups 
                 and uploading them back to Telegram.
 👨‍💻 Author: Alaa
-
 📬 Telegram: https://t.me/AlAA_MSE
 🗓️ Created: 2025-01-11
 🔄 Last Modified: 2025-01-11
@@ -49,7 +57,10 @@ async def devggn_boot():
 
 💬 المطور علاء الدين يتمنى أن يكون نسيبي تاقي بحالة جيدة 
 😂 وأن يعطيني أخته ههههههههههه
-""")
+"""
+    
+    for line in bot_info.split("\n"):
+        animated_print(line, 0.05)
 
     asyncio.create_task(schedule_expiry_check())
     print("Auto removal started ...")
@@ -60,3 +71,4 @@ if __name__ == "__main__":
     loop.run_until_complete(devggn_boot())
 
 # ------------------------------------------------------------------ #
+
